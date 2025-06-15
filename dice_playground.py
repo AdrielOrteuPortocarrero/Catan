@@ -1,8 +1,8 @@
 import random
 import math
-def roll_dice():
-    die1 = random.randint(1, 20)
-    die2 = random.randint(1, 20)
+def roll_dice(faces_of_dice=6):
+    die1 = random.randint(1, faces_of_dice)
+    die2 = random.randint(1, faces_of_dice)
     return die1 + die2
 
 def compute_rolls():
@@ -52,7 +52,7 @@ def compute_rolls():
         results[roll_dice()] += 1
     return results
 
-#print (compute_results())
+print (compute_rolls())
 
 
 def predict_rolls(n=100, dice_num=15):
