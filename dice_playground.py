@@ -2,13 +2,14 @@ import random
 import math
 
 
-def roll_dice(faces_of_dice=6):
-    die1 = random.randint(1, faces_of_dice)
-    die2 = random.randint(1, faces_of_dice)
-    return die1 + die2
+def roll_dice(faces_of_dice=6, num_dice=2):
+    dice_sum = 0
+    for i in range(num_dice):
+        dice_sum += random.randint(1, faces_of_dice)
+    return dice_sum
 
 
-def compute_rolls():
+def compute_rolls(num_rolls=100000):
     results = {
         2: 0,
         3: 0,
@@ -50,19 +51,20 @@ def compute_rolls():
         39: 0,
         40: 0,
     }
-
-    for n in range(100000):
+    for n in range(num_rolls):
         results[roll_dice()] += 1
+    for key in results:
+        results[key] = results[key]/(num_rolls/100)
     return results
 
 
-print(compute_rolls())
+print(compute_rolls(10000000))
 
 
-def predict_rolls(n=100, dice_num=15):
+def predict_rolls(faces=6, dice_num=2):
     predictions = {}
-    denominator = n * n
-    for x in range(2, 2*n+1):
+    denominator = faces ** dice_num # exponentiation
+    for x in range(2, 2 * faces + 1):
         numerator = math.comb(x-1, dice_num-1)
         predictions[x] = (numerator/denominator)*100
 

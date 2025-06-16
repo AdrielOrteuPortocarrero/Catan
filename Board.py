@@ -36,3 +36,4 @@ class Board:
     _num_wheat_fields = 4
     def __init__(self):
         self._board = nx.Graph()
+        
