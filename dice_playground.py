@@ -66,8 +66,7 @@ def predict_rolls(faces=6, dice_num=2):
     denominator = faces ** dice_num # exponentiation
     for x in range(2, 2 * faces + 1):
         numerator = math.comb(x-1, dice_num-1)
-        predictions[x] = (numerator/denominator)*100
-
+        predictions[x] = math.trunc((numerator/denominator)*100000)/1000 # sets format
     return predictions
 
 
