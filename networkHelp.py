@@ -4,7 +4,8 @@ import random
 import time
 
 def show_graph (graph):
-    pos = nx.spring_layout(graph, seed=14)
+    pos = nx.spring_layout(graph, seed=17)
+    # pos = nx.spring_layout(graph)
     nx.draw(graph, pos, with_labels=True)
     plt.show()
 

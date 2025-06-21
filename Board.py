@@ -48,7 +48,7 @@ class Board:
     _num_wheat_fields = 4
     def __init__(self, size):
         self._board = nx.Graph()
-        self.create_board(size=size)
+        #self.create_board(size=size)
     
     def create_layer(self, k: int, vertex_set: List[List[float]]) -> None:
         pass
@@ -60,7 +60,7 @@ class Board:
             self.add_new_layer_vertices(layer_description=new_vertices)
             self.create_layer(l, vertex_set=new_vertices)
     
-    def make_branch(self, length: int, origin: int):
+    def make_branch(self, length: int, origin: Tuple[int, int, int]):
         # origin = (0,0,k')
         self._board.add_node(origin)
         margin = [origin]
@@ -76,12 +76,32 @@ class Board:
                     self._board.add_edge(node, margin[j])
             else:
                 # add_layer()
+                margin_prime = []
                 for j, node in enumerate(margin):
+                    margin_prime.append((node[0], node[1] + 1, node[2]))
+                    margin_prime.append((node[0] + 1, node[1] + 1, node[2]))
                     
-                    pass
-                pass
+                    self._board.add_edge(node, margin_prime[-1])
+                    self._board.add_edge(node, margin_prime[-2])
+                margin = margin_prime
+            # show_graph(self._board)
+        #show_graph(self._board)
+    
+    def connect_branches(self, layer_num:int):
+        vertices = self._board.nodes
+        print(vertices)
+        for l in range(0, layer_num*2, 2):
             pass
         
+    
+    def make_board(self):
+        for i in range(6):
+            self.make_branch(length=2, origin=(0,0,i))
+        show_graph(self._board)
+        for i in range(6):
+            pass
+        
+
 
 
 def create_board_playground(k: int):
@@ -121,9 +141,9 @@ def create_board_playground(k: int):
         #for i in range(0, 6 * k, k):
         #    for j in range(k):
         #        G.remove_edge()
-    show_graph(G)
+    
 
 
-# create_board_playground(3)
-
+a = Board(size=3)
+a.make_board()
 
