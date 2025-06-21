@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 from networkx import reverse
 
 from networkHelp import show_graph
-from typing import List
+from typing import List, Tuple
 
 class Tile (ABC):
     _type = None
@@ -31,7 +31,14 @@ class ProducerTile(Tile):
 class DesertTile (Tile):
     pass
 
-#hello
+
+class Intersection:
+    
+    def __init__(self, identifier: Tuple[int]):
+        self._identifier : Tuple[int] = identifier
+    
+
+
 class Board:
     _num_deserts = 1
     _num_mountains = 3
@@ -52,7 +59,29 @@ class Board:
             new_vertices = [ [j for j in range(l)] for i in range(6)]
             self.add_new_layer_vertices(layer_description=new_vertices)
             self.create_layer(l, vertex_set=new_vertices)
-            
+    
+    def make_branch(self, length: int, origin: int):
+        # origin = (0,0,k')
+        self._board.add_node(origin)
+        margin = [origin]
+        for i in range(length*2):
+            if i%2 == 0:
+                # extend()
+                for j, node in enumerate(margin):
+                    # create_new_name()
+                    # margin[j] (old) = (M, L, B)
+                    pre_node = margin[j]
+                    margin[j] = (pre_node[0], pre_node[1]+1, pre_node[2])
+                    ###
+                    self._board.add_edge(node, margin[j])
+            else:
+                # add_layer()
+                for j, node in enumerate(margin):
+                    
+                    pass
+                pass
+            pass
+        
 
 
 def create_board_playground(k: int):
