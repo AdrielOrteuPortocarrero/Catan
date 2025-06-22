@@ -87,11 +87,11 @@ class Board:
             # show_graph(self._board)
         #show_graph(self._board)
     
-    def connect_branches(self, layer_num:int):
+    def connect_branches(self, layer_num:int, branches: Tuple[int, int]):
         vertices = self._board.nodes
         print(vertices)
         for l in range(0, layer_num*2, 2):
-            pass
+            self._board.add_edge((l//2, l, branches[0]), (0, l, branches[1]))
         
     
     def make_board(self):
@@ -99,7 +99,9 @@ class Board:
             self.make_branch(length=2, origin=(0,0,i))
         show_graph(self._board)
         for i in range(6):
-            pass
+            self.connect_branches(layer_num=3, branches=(i%6, (i+1)%6))
+            # show_graph(self._board)
+        show_graph(self._board)
         
 
 
