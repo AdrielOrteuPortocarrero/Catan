@@ -39,10 +39,16 @@ def show_graph(graph):
         raise ValueError("Graph is not planar")
 
     # Start with a planar layout
-    pos_planar = nx.planar_layout(graph)
+    #pos_planar = nx.planar_layout(graph)
+    #pos_planar = nx.shell_layout(graph)
+    pos_planar = nx.circular_layout(graph)
+    #pos_planar = nx.spring_layout(graph)
+
+
 
     # Use the planar layout as the initial position for spring_layout
     pos = nx.spring_layout(graph, pos=pos_planar, seed=17, iterations=50)
+
 
     nx.draw(graph, pos, with_labels=True)
     plt.show()
