@@ -70,4 +70,12 @@ def predict_rolls(faces=6, dice_num=2):
     return predictions
 
 
-print(predict_rolls())
+def count_k_n(s, k, n):
+    total = 0
+    for j in range((s - k) // n + 1):
+        term = (-1)**j * math.comb(k, j) * math.comb(s - n * j - 1, k - 1)
+        total += term
+    return total
+
+for i in range(1, 12):
+    print(count_k_n(i+1, 2, 6)/36)

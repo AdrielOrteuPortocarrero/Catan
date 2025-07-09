@@ -1,15 +1,13 @@
 from abc import ABC, abstractmethod
 import networkx as nx
-import matplotlib.pyplot as plt
-from networkx import reverse
-
 from networkHelp import show_graph
 from typing import List, Tuple
-
+#from resource import *
 class Tile (ABC):
-    _type = None
-    def __init__(self, num: int) -> None:
+    def __init__(self, num: int, resource: str) -> None:
+        self._type : str = resource
         self._num : int = num
+        self._intersections : Intersection
     
     @property
     def num(self) -> int:
@@ -19,23 +17,14 @@ class Tile (ABC):
         self._num = new_num
     
 
-class ProducerTile(Tile):
-    
-    @property
-    def type(self) -> None:
-        return self._type
-    @type.setter
-    def type(self, tile_type):
-        self._type = tile_type
-
-class DesertTile (Tile):
-    pass
-
-
 class Intersection:
     
     def __init__(self, identifier: Tuple[int]):
         self._identifier : Tuple[int] = identifier
+        self._resources : Tuple[str, str, str]
+    
+    def resource(self):
+        pass
     
 
 
@@ -88,8 +77,6 @@ class Board:
         #show_graph(self._board)
     
     def connect_branches(self, layer_num:int, branches: Tuple[int, int]):
-        vertices = self._board.nodes
-        print(vertices)
         for l in range(0, layer_num*2, 2):
             self._board.add_edge((l//2, l, branches[0]), (0, l, branches[1]))
         
