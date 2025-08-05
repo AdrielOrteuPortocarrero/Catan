@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from Resources import Resource
+from .Resources import Resource
 from typing import List, Dict
 
 class CraftingTable:
