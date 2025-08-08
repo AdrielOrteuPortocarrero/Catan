@@ -19,6 +19,7 @@ class CraftingTable:
         pass
 
 class Player(ABC):
+    _crafting = CraftingTable()
     def __init__(self, name):
         self._name: str = name
         self._points: int = 0

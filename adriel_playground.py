@@ -3,6 +3,7 @@ from networkx import PlanarEmbedding
 
 
 import catan_engine as ce
+from catan_engine import Players
 
 ce.play()
 
@@ -46,3 +47,13 @@ ce.play()
 #    #    to_show += str(intersection) + "  "
 #    #print(to_show)
 #ce.show(board.nx_board)
+
+
+
+player1 = ce.Bot(name="bot1", algorithm=my_method)
+player2 = ce.Person(name="Uriel")
+players = ce.Players(players=[player1, player2])
+board = ce.Board()
+game = ce.Game(players=players, board=board)
+
+game.play()
