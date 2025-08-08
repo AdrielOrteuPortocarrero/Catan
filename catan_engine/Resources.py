@@ -22,5 +22,5 @@ class Stone (Resource):
 class Wheat (Resource):
     pass
 
-#class Knight (Resource):
-#    pass
+class Knight (Resource):
+    pass

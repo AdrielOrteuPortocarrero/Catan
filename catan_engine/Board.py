@@ -157,7 +157,7 @@ class Board:
                     if (u, v) not in seen_half_edges:
                         # Walk around the tile to the right of (u, v)
                         
-                        ###
+                        ### compute necessary values for Tile instance ###
                         tile_nodes = embedding.traverse_face(u, v)
                         if tile_nodes == [(0, 0, 0), (0, 0, 1), (0, 0, 2), (0, 0, 3), (0, 0, 4), (0, 0, 5)] or len(tile_nodes) != 6:
                             r = "d"
