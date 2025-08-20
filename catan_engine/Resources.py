@@ -24,3 +24,4 @@ class Wheat (Resource):
 
 class Knight (Resource):
     pass
+

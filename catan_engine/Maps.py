@@ -5,18 +5,37 @@ from random import choice
 
 from .networkHelp import show_graph
 from typing import List, Tuple
-#from resource import *
-
+from resource import *
+from Player import Player
 
 class Intersection:
     
     def __init__(self, identifier: Tuple[int, int, int]) -> None:
         self._identifier : Tuple[int, int, int] = identifier # format -> (modulo, layer, branch)
-        self._resources : Tuple[str, str, str]
-        self._nums : Tuple[int, int, int]
+        self._building : int = 0
+        self._settler : str = "" # The settler parameter stores the UNIQUE string that identifies the player that settled in this intersectionn
     
-    def resource(self):
-        pass
+    @property
+    def settler(self):
+        return self._settler
+    
+    @settler.setter
+    def settler(self, settler: Player) -> None:
+        self._settler = settler
+    
+    @property
+    def building(self) -> int:
+        return self._building
+    
+    @building.setter
+    def building(self, building : int) -> None:
+        if type(building) == int:
+            if 0 == building or 1 == building or 2 == building:
+                self._building = building
+            else:
+                raise ValueError ("buildings have a value of 0 or 1 or 2")
+        else:
+            raise TypeError ("buildings are integers")
     
     @property
     def identifier(self) -> Tuple[int, int, int]:
@@ -55,7 +74,7 @@ class Tile:
         return self._resource
     
     @property
-    def intersections(self) -> List[Intersection]:
+    def intersections(self) -> list[Intersection]:
         return self._intersections
     
     @num.setter
@@ -69,7 +88,7 @@ class Tile:
         self._resource = new_resource
     
     @intersections.setter
-    def intersections(self, new_intersections: List[Intersection]) -> None:
+    def intersections(self, new_intersections: list[Intersection]) -> None:
         self._intersections = new_intersections
     
     def __len__(self):
@@ -80,7 +99,58 @@ class Tile:
     
     def __str__(self):
         return f"resource={self.resource} | num={self.num}\n{ [str(intersect) for intersect in self.intersections] }"
+    
+    def generate_resources(self, luck):
+        if self.num == luck:
+            for intersect in self.intersections:
+                intersect.settler.resources[self.resource] += intersect.building
 
+
+class Map (ABC):
+    
+    def __init__(self):
+        self._map : Graph = Graph()
+        self._tiles : list[Tile] = []
+    
+    @property
+    def map(self):
+        return self._map
+    @map.setter
+    def map(self, new_map:Graph):
+        self._map = new_map
+    
+    def get_tiles(self):
+        """Sets the values of a list of tiles, each tile is a list of directed edges of the board."""
+        planar_bool, embedding = nx.check_planarity(self.map)
+        seen_half_edges = set()
+        self._tiles = []
+        
+        if planar_bool:
+            for u in embedding:
+                for v in embedding[u]:
+                    if (u, v) not in seen_half_edges:
+                        # Walk around the tile to the right of (u, v)
+                        
+                        ### compute necessary values for Tile instance ###
+                        tile_nodes = embedding.traverse_face(u, v)
+                        if tile_nodes == [(0, 0, 0), (0, 0, 1), (0, 0, 2), (0, 0, 3), (0, 0, 4), (0, 0, 5)] or len(
+                                tile_nodes) != 6:
+                            r = "d"
+                            n = 0
+                        else:
+                            r = choice(self._resources)
+                            n = choice(self._nums)
+                            self._resources.remove(r)
+                            self._nums.remove(n)
+                        ###
+                        
+                        tile = Tile(intersections=tile_nodes, num=n, resource=r)
+                        
+                        self._tiles.append(tile)
+                        # Mark all directed edges in the tile as seen
+                        for i in range(len(tile)):
+                            a, b = tile[i], tile[(i + 1) % len(tile)]
+                            seen_half_edges.add((a, b))
 
 
 class Board:
@@ -96,7 +166,7 @@ class Board:
         self._tiles : List[Tile] = []
         self._size : int = size
         
-        self._resources = ["m", "m", "m", "c", "c", "c", "c", "f", "f", "f", "f", "s", "s", "s", "s", "w", "w", "w", "w"]
+        self._resources = ["rock", "rock", "rock", "clay", "clay", "clay", "clay", "lumber", "lumber", "lumber", "lumber", "wool", "wool", "wool", "wool", "cereal", "cereal", "cereal", "cereal"]
         self._nums = [2, 3, 3, 4, 4, 5, 5, 6, 6, 8, 8, 9, 9, 10, 10, 11, 11, 12]
         
         self.make_board()

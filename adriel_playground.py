@@ -1,11 +1,23 @@
 import networkx as nx
 from networkx import PlanarEmbedding
 
+def play_game():
+    import catan_engine as ce
+    
+    
+    # player1 = ce.Bot(name="bot1", algorithm=my_method)
+    player2 = ce.Person(name="Uriel")
+    players = ce.Players( players=[ ce.Person( input("Name:") ) for i in range( int( input("Num Players:") ) ) ] )
+    board = ce.Board()
+    ce.show(board.nx_board)
+    game = ce.Game(players=players, board=board)
+    
+    game.play()
 
-import catan_engine as ce
-from catan_engine import Players
 
-ce.play()
+play_game()
+
+#ce.play()
 
 #def get_faces(embedding):
 #    """Returns a list of faces, each face is a list of directed edges."""
@@ -50,10 +62,3 @@ ce.play()
 
 
 
-player1 = ce.Bot(name="bot1", algorithm=my_method)
-player2 = ce.Person(name="Uriel")
-players = ce.Players(players=[player1, player2])
-board = ce.Board()
-game = ce.Game(players=players, board=board)
-
-game.play()
