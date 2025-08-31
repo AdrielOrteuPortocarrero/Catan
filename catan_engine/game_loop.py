@@ -24,7 +24,10 @@ class Game:
             raise TypeError("The players attribute must be a LIST")
         
     
-        def set_up(self):
+    def set_up(self):
+        for player in self.players.players:
+            player.starting_locations()
+        for player in reversed(self.players.players):
             pass
     
     def play(self):

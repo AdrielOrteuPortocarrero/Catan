@@ -67,11 +67,6 @@ class Player(ABC):
     @property
     def territory(self) -> Board:
         return self._territory
-    
-    def harvest_resources(self, luck):
-        for intersection in self._territory.nx_board:
-            if luck in intersection.num:
-                return intersection[intersection.num.index(luck)]
 
 class Person(Player):
     pass

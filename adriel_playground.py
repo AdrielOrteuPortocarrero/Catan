@@ -12,6 +12,7 @@ def play_game():
     ce.show(board.nx_board)
     game = ce.Game(players=players, board=board)
     
+    game.set_up()
     game.play()
 
 

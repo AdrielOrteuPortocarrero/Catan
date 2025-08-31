@@ -5,8 +5,9 @@ from random import choice
 
 from .networkHelp import show_graph
 from typing import List, Tuple
-from resource import *
-from Player import Player
+# from resource import *
+
+from .Player import Player
 
 class Intersection:
     
@@ -100,10 +101,16 @@ class Tile:
     def __str__(self):
         return f"resource={self.resource} | num={self.num}\n{ [str(intersect) for intersect in self.intersections] }"
     
-    def generate_resources(self, luck):
+    def generate_resources(self, luck) -> dict[str:Tuple[str,int]]:
         if self.num == luck:
+            generated_resources = {}
             for intersect in self.intersections:
-                intersect.settler.resources[self.resource] += intersect.building
+                if intersect.settler in generated_resources:
+                    generated_resources[intersect.settler] += intersect.building
+                else:
+                    generated_resources[intersect.settler] += intersect.building
+        
+        return generated_resources
 
 
 class Map (ABC):
@@ -215,7 +222,7 @@ class Board:
     def nx_board(self):
         return self._board
     
-    def get_tiles(self):
+    def compute_tiles(self):
         """Sets the values of a list of tiles, each tile is a list of directed edges of the board."""
         planar_bool, embedding = nx.check_planarity(self.nx_board)
         seen_half_edges = set()
